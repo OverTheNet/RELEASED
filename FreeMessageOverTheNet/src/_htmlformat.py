@@ -207,6 +207,10 @@ class HTMLFORMATTYPES(object):
           font-size: 15px;
           cursor: pointer;
         }
+        .clr_plus {
+          background-color: black;
+          color: #ffffff;
+        }
         .danger {background-color: #990000;} 
         .danger:hover {background: #ff1a1a;}
         </style>
@@ -214,16 +218,16 @@ class HTMLFORMATTYPES(object):
           <table>
           <fieldset>
           <label for="in_name">USERNAME</label><br>
-          <input type="text" id="in_name" name="username" placeholder="Username"><br>
+          <input class="clr_plus" type="text" id="in_name" name="username" placeholder="Username"><br>
           </fieldset>
           <fieldset>
           <label>MESSAGE</label><br>
-          <textarea rows="15" cols="60" name="message" placeholder="Message">
+          <textarea class="clr_plus" rows="15" cols="60" name="message" placeholder="Message">
           </textarea>
           </fieldset>
           <fieldset>
           <label for="in_loc">NOTE</label><br>
-          <input type="text" id="in_loc" name="note" placeholder="Note"><br>
+          <input class="clr_plus" type="text" id="in_loc" name="note" placeholder="Note"><br>
           </fieldset>
           <input type="hidden" name="_subject" value="New Message">
           <input type="hidden" name="_captcha" value="false">
@@ -247,10 +251,14 @@ class HTMLFORMATTYPES(object):
         }
         .btn_plus {
           border: none;
-          color: 990000;
+          color: #00ff00;
           margin: 7px 0 0 0;
           font-size: 17px;
           cursor: pointer;
+        }
+        .clr_plus {
+          background-color: black;
+          color: #ffffff;
         }
         .danger {background-color: #990000;} 
         .danger:hover {background: #ff1a1a;}
@@ -259,11 +267,11 @@ class HTMLFORMATTYPES(object):
           <table>
           <fieldset>
           <label for="in_name">USERNAME</label><br>
-          <input type="text" id="in_name" name="username" placeholder="Username"><br>
+          <input class="clr_plus" type="text" id="in_name" name="username" placeholder="Username"><br>
           </fieldset>
           <fieldset>
           <label for="in_loc">NOTE</label><br>
-          <input type="text" id="in_loc" name="note" placeholder="Note"><br>
+          <input class="clr_plus" type="text" id="in_loc" name="note" placeholder="Note"><br>
           </fieldset>
           <fieldset>
           <label for="in_loc">UPLOAD IMAGE</label><br>
