@@ -1,0 +1,12 @@
+[server]
+
+port = 8501
+
+[logger]
+
+level = "error"
+messageFormat = ""
+
+[client]
+
+caching = false
