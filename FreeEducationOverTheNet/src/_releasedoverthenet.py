@@ -8,6 +8,13 @@ from _citatsearch import *
 from _halarsearch import *
 from _htmlstyle import *
 
+__all__ = ["FREEOVERTHENET"]
+__author__ = "OverTheNet / ^-^"
+__copyright__ = "Fuck CopyRights"
+__version__ = "1.0"
+__status__ = "RELEASE - OPERATION"
+__description__  = "Free Education To The World"
+
 class FREEOVERTHENET(object):
     def __init__(self):
         self.__p = "OvRThNt"
