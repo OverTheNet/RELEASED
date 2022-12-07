@@ -4,7 +4,7 @@ __all__ = ["USERAGENTGATHERING"]
 
 class USERAGENTGATHERING(object):
     def __init__(self):
-        self.__ua = "../content/useragents.json"
+        self.__ua = "content/useragents.json"
     def __str__(self)->str:
         return "USERAGENT LIST - SUBPROCESS"
     def __call__(self):
