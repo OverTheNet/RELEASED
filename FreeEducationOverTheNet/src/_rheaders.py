@@ -1,12 +1,12 @@
 from _uagents import *
-import random
+import random,os
 
 __all__ = ["REQUESTHEADER"]
 
 class REQUESTHEADER(object):
     def __init__(self):
         self.__u = random.choice(USERAGENTGATHERING()._PICK())
-        self.__f = "../refererrequests.txt"
+        self.__f = "/refererrequests.txt"
         self.__w = random.choice(["Mon","Tue","Wed","Thu","Fri","Sat","Sun"])
         self.__m = random.choice(["Jan","Feb","Mar","Apr","Aug","Sep","Oct","Nov","Dec"])
         self.__a = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
@@ -21,7 +21,9 @@ class REQUESTHEADER(object):
         return REQUESTHEADER.__doc__
     def _REFERERREAD(self,er:str="replace")->str:
         r = []
-        with open(self.__f,"r",errors=er) as rd:
+        dr = os.path.dirname(__file__)
+        mfl = dr+self.__f
+        with open(mfl,"r",errors=er) as rd:
             for ir in rd:
                 try:
                     x = ir.strip()
