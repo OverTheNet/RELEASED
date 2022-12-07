@@ -6,7 +6,7 @@ __all__ = ["REQUESTHEADER"]
 class REQUESTHEADER(object):
     def __init__(self):
         self.__u = random.choice(USERAGENTGATHERING()._PICK())
-        self.__f = "../content/refererrequests.txt"
+        self.__f = "content/refererrequests.txt"
         self.__w = random.choice(["Mon","Tue","Wed","Thu","Fri","Sat","Sun"])
         self.__m = random.choice(["Jan","Feb","Mar","Apr","Aug","Sep","Oct","Nov","Dec"])
         self.__a = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
