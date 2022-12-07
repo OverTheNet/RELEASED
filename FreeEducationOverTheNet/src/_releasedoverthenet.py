@@ -76,7 +76,8 @@ class FREEOVERTHENET(object):
                     else:
                         st.warning("[WARNING] - EMPTY PARAMETER")
                         pass
-                except:
+                except Exception as err:
+                    st.code(str(err))
                     st.code(str(self.__e._psearch()))
                     st.warning("IF YOU HAVE AN ERROR, YOU CAN TRY ANOTHER URL OR GENERAL SEARCH OPTIONS")
         elif sx == "ALL SEARCH":
