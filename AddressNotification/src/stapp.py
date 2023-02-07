@@ -7,7 +7,7 @@ rt = os.path.dirname(os.path.relpath((__file__)))
 
 class STAPP(object):
     def __init__(self):
-        self.__pt = "ADDRESS GATHERING SYSTEM - EMERGENCY"
+        self.__pt = "EMERGENCY"
         self.__ly = "wide"
         self.__ss = "expanded"
         self.__adiyaman = None
