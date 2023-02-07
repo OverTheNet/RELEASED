@@ -306,5 +306,5 @@ if __name__ == "__main__":
     try:
         STAPP()._TABS()
     except Exception as err:
-        print(str(err))
-        st.warning("İNTERNET BAĞLANTINIZI KONTROL EDİN VEYA TEKRAR DENEYİN")
+        st.info("LÜTFEN SİSTEMİN YÜKLENMESİNİ BEKLEYİN")
+        pass
