@@ -1,5 +1,6 @@
 import streamlit as st
 from PIL import Image
+import os
 from _dataaccess import *
 
 rt = os.path.dirname(os.path.relpath((__file__)))
