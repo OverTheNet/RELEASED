@@ -2,6 +2,8 @@ import streamlit as st
 from PIL import Image
 from _dataaccess import *
 
+rt = os.path.dirname(os.path.relpath((__file__)))
+
 class STAPP(object):
     def __init__(self):
         self.__pt = "ADDRESS GATHERING SYSTEM - EMERGENCY"
@@ -31,9 +33,9 @@ class STAPP(object):
         st.caption("Bu platform kazazedelere erişimi kolaylaştırmak ve adres bilgilendirmesi için oluşturulmuştur")
         ct1,ct2 = st.columns(2)
         with ct1:
-            st.image(Image.open("AKUT.png").resize((250,100)))
+            st.image(Image.open(os.path.join(rt,"AKUT.png")).resize((250,100)))
         with ct2:
-            st.image(Image.open("AFAD.png").resize((340,150)))
+            st.image(Image.open(os.path.join(rt,"AFAD.png")).resize((340,150)))
     def _SIDEBAR(self):
         _infoex = """
         
