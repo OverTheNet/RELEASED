@@ -19,7 +19,3 @@ class YAMLREADING(object):
     def _TILE(self):
         dt = self._DATA()["tiles"]
         return dt
-    
-    
-# if __name__ == "__main__":
-#     print(YAMLREADING()._TILE())
