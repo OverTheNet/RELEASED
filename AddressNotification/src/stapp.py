@@ -232,5 +232,6 @@ if __name__ == "__main__":
     STAPP()._PRINTBANNER()
     try:
         STAPP()._TABS()
-    except:
+    except Exception as err:
+        st.warning(str(err))
         st.warning("İNTERNET BAĞLANTINIZI KONTROL EDİN VEYA TEKRAR DENEYİN")
