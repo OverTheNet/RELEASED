@@ -32,10 +32,3 @@ class GEOLOCATIONGATHERING(object):
                 return None,None,None
         except:
             None,None,None
-        
-# if __name__ == "__main__":
-#     tp = GEOLOCATIONGATHERING()
-#     main,lat,lon = tp._RETURNALL("odabaşı mahallesi defne")
-#     print(lat)
-#     print(lon)
-#     print(main)
