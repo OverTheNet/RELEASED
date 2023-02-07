@@ -1,0 +1,19 @@
+[server]
+
+port = 8501
+
+[theme]
+
+base = "dark"
+
+[logger]
+
+level = "error"
+messageFormat = ""
+
+[client]
+
+caching = false
+
+[browser]
+gatherUsageStats = false
