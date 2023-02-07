@@ -1,19 +1,25 @@
 import streamlit as st
 from PIL import Image
-import os
 from _dataaccess import *
+from _geocode import *
+import os,folium
+from _yamlcontrol import *
+from folium import plugins
+from streamlit_folium import folium_static
 
 rt = os.path.dirname(os.path.relpath((__file__)))
 
 class STAPP(object):
     def __init__(self):
-        self.__pt = "EMERGENCY"
+        self.__pt = "ADDRESS GATHERING SYSTEM - EMERGENCY"
         self.__ly = "wide"
         self.__ss = "expanded"
         self.__adiyaman = None
         self.__maras = None
         self.__hatay = None
         self.__antep = None
+        self.__tp = GEOLOCATIONGATHERING()
+        self.__tl = YAMLREADING()._TILE()
     def __str__(self):
         return "ADDRESS GATHERING WEB APPLOCATION - PROCESS"
     def __call__(self):
@@ -22,8 +28,18 @@ class STAPP(object):
         raise TypeError("[DENIED]")
     def __repr__(self):
         return STAPP.__doc__
-    def _CONVERT_DF(self,dtinit):
+    def _CONVERT_DF(self,dtinit:classmethod):
         return dtinit.to_csv().encode("utf-8")
+    def _RETURNMAP(self,tl:str="Stamen Terrain",
+                   lc:list=[38,35],
+                   zm:int=5):
+        mf = folium.Map(tiles=tl,
+                        location=lc,
+                        zoom_start=zm,
+                        attr="<p>COORDINATES</p>")
+        return mf
+    def _RETURNCOOR(self,lat:list or tuple,lon:list or tuple):
+        return list(zip(lat,lon))
     def _CONF(self):
         st.set_page_config(page_title=self.__pt,
                            layout=self.__ly,
@@ -71,6 +87,51 @@ AFAD KOORDİNASYON VE İLETİŞİM BİLGİLERİ\n\n\r
         self.__maras["ISIM"] = self.__maras["ISIM"].str.capitalize()
         self.__hatay["ISIM"] = self.__hatay["ISIM"].str.capitalize()
         self.__antep["ISIM"] = self.__antep["ISIM"].str.capitalize()
+    def _CREATEATTR(self,dttr:classmethod):
+        latlst = []
+        lonlst = []
+        mnllst = []
+        addval = dttr["ADRES"].values
+        for ic,ix in enumerate(addval):
+            sll = ix.split()
+            tcc = " ".join(str(xty) for xty in sll[:2])
+            tcc += "," + dttr["SEHIR"][ic]
+            try:
+                main,lat,lon = self.__tp._RETURNALL(tcc.lower())
+                if main != None:
+                    mnllst.append(main)
+                    latlst.append(float(lat))
+                    lonlst.append(float(lon))
+                else:
+                    pass
+            except:
+                cty = dttr["SEHIR"][ic]
+                main,lat,lon = self.__tp._RETURNALL(str(cty))
+                if main != None:
+                    mnllst.append(main)
+                    latlst.append(float(lat))
+                    lonlst.append(float(lon))
+                else:
+                    pass
+        return latlst,lonlst,mnllst
+    def _CREATEMAP(self,ddtr:classmethod):
+        ltlst,lnlst,mnlst = self._CREATEATTR(ddtr)
+        mf = self._RETURNMAP()
+        plugins.MiniMap().add_to(mf)
+        cmn = 0
+        for xlt,xln in zip(ltlst,lnlst):
+            folium.Marker(location=[float(xlt),float(xln)],
+                          popup=f"<h4>{str(round(xlt,2))},{str(round(xln,2))}</h4> - <p>{str(mnlst[cmn])}</p>",
+                          tooltip="Show info",
+                          icon=folium.Icon(color="red",icon="flag")).add_to(mf)
+            cmn += 1
+        for xn,xt in self.__tl.items():
+            xt += "/MapServer/tile/{z}/{y}/{x}"
+            folium.TileLayer(tiles=xt,
+                             name=xn,
+                             attr="<p>COORDINATES</p>").add_to(mf)
+        folium.LayerControl().add_to(mf)
+        folium_static(mf)
     def _TABS(self):
         self._DATAACCESS()
         md1,md2,md3 = st.tabs(["SORGU PANELİ",
@@ -134,6 +195,7 @@ AFAD KOORDİNASYON VE İLETİŞİM BİLGİLERİ\n\n\r
                                        "ANTEP"])
             with hd1:
                 st.subheader("ADIYAMAN - BİLGİLENDİRME VE ERİŞİM")
+                st.caption("HARİTA İÇERİR")
                 if len(self.__adiyaman["ADRES"]) != 0:
                     st.dataframe(self.__adiyaman)
                     md = self._CONVERT_DF(self.__adiyaman)
@@ -141,10 +203,13 @@ AFAD KOORDİNASYON VE İLETİŞİM BİLGİLERİ\n\n\r
                                        data=md,
                                        file_name="adiyaman.csv",
                                        mime="text/csv")
+                    st.caption("EN YAKIN KONUMA GÖRE BELİRLENMEKTEDİR")
+                    self._CREATEMAP(self.__adiyaman)
                 else:
                     st.text("Henüz veri bulunmamaktadır")
             with hd2:
                 st.subheader("MARAŞ - BİLGİLENDİRME VE ERİŞİM")
+                st.caption("HARİTA İÇERİR")
                 if len(self.__maras["ADRES"]) != 0:
                     st.dataframe(self.__maras)
                     md = self._CONVERT_DF(self.__maras)
@@ -152,10 +217,13 @@ AFAD KOORDİNASYON VE İLETİŞİM BİLGİLERİ\n\n\r
                                        data=md,
                                        file_name="maras.csv",
                                        mime="text/csv")
+                    st.caption("EN YAKIN KONUMA GÖRE BELİRLENMEKTEDİR")
+                    self._CREATEMAP(self.__maras)
                 else:
                     st.text("Henüz veri bulunmamaktadır")
             with hd3:
                 st.subheader("HATAY - BİLGİLENDİRME VE ERİŞİM")
+                st.caption("HARİTA İÇERİR")
                 if len(self.__hatay["ADRES"]) != 0:
                     st.dataframe(self.__hatay)
                     md = self._CONVERT_DF(self.__hatay)
@@ -163,10 +231,13 @@ AFAD KOORDİNASYON VE İLETİŞİM BİLGİLERİ\n\n\r
                                        data=md,
                                        file_name="hatay.csv",
                                        mime="text/csv")
+                    st.caption("EN YAKIN KONUMA GÖRE BELİRLENMEKTEDİR")
+                    self._CREATEMAP(self.__hatay)
                 else:
                     st.text("Henüz veri bulunmamaktadır")
             with hd4:
                 st.subheader("ANTEP - BİLGİLENDİRME VE ERİŞİM")
+                st.caption("HARİTA İÇERİR")
                 if len(self.__antep["ADRES"]) != 0:
                     st.dataframe(self.__antep)
                     md = self._CONVERT_DF(self.__antep)
@@ -174,6 +245,8 @@ AFAD KOORDİNASYON VE İLETİŞİM BİLGİLERİ\n\n\r
                                        data=md,
                                        file_name="antep.csv",
                                        mime="text/csv")
+                    st.caption("EN YAKIN KONUMA GÖRE BELİRLENMEKTEDİR")
+                    self._CREATEMAP(self.__antep)
                 else:
                     st.text("Henüz veri bulunmamaktadır")
         with md3:
@@ -233,5 +306,5 @@ if __name__ == "__main__":
     try:
         STAPP()._TABS()
     except Exception as err:
-        st.warning(str(err))
+        print(str(err))
         st.warning("İNTERNET BAĞLANTINIZI KONTROL EDİN VEYA TEKRAR DENEYİN")
