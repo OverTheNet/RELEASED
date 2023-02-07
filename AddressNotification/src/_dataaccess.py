@@ -1,8 +1,10 @@
 import pandas as pd
 
+rt = os.path.dirname(os.path.relpath((__file__)))
+
 class DATAGATHERING(object):
     def __init__(self):
-        self.__dt = "deprem_input.csv"
+        self.__dt = os.path.join(rt,"deprem_input.csv")
     def __str__(self):
         return "DATA GATHERING - SUBPROCESS"
     def __call__(self):
